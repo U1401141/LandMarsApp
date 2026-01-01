@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Land on Mars Mission Simulator</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="style.css" />
+  </head>
+  <body class="flex items-center justify-center min-h-screen">
+    <div id="appContainer" class="main-container bg-gray-50 rounded-2xl w-full max-w-[500px] aspect-[500/600] relative shadow-2xl overflow-hidden">
+      <canvas id="gameCanvas" width="500" height="600" class="w-full h-full block"></canvas>
+      <div
+        id="uiOverlay"
+        class="absolute inset-0 p-8 flex flex-col justify-between pointer-events-none"
+      ></div>
+    </div>
+
+    <script src="script.js"></script>
+  </body>
+</html>
