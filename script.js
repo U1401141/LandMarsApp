@@ -63,7 +63,7 @@ const LARGE_WIND_PERCENT = 1.05;
 const ROUND_WIND_BONUS = 0.1;
 const RECT_WIND_BONUS = 0.02;
 
-const SMALL_GRAVITY_MULT = 0.7;
+const SMALL_GRAVITY_MULT = 2.5;
 const MEDIUM_GRAVITY_MULT = 5.0;
 const LARGE_GRAVITY_MULT = 10.3;
 
@@ -120,138 +120,158 @@ function seededRandom() {
 // ==================== ROCKET DRAWING ====================
 
 function drawRoundRocket(ctx, x, y, s) {
-  const bodyWidth = 40 * s;
-  const bodyHeight = 60 * s;
-  const noseHeight = 25 * s;
-  const windowSize = 20 * s;
+  try {
+    const bodyWidth = 40 * s;
+    const bodyHeight = 60 * s;
+    const noseHeight = 25 * s;
+    const windowSize = 20 * s;
 
-  ctx.save();
-  ctx.translate(x, y);
-  ctx.strokeStyle = "#000";
-  ctx.lineWidth = 1.5 * s;
+    ctx.save();
+    ctx.translate(x, y);
+    ctx.strokeStyle = "#000";
+    ctx.lineWidth = 1.5 * s;
 
-  ctx.fillStyle = "#E6E6F0";
-  ctx.beginPath();
-  ctx.moveTo(-bodyWidth / 2, bodyHeight / 2);
-  ctx.bezierCurveTo(
-    -bodyWidth / 2 - 5 * s,
-    bodyHeight / 2 - 20 * s,
-    -bodyWidth / 2 - 5 * s,
-    -bodyHeight / 2 + 20 * s,
-    0,
-    -bodyHeight / 2 - noseHeight
-  );
-  ctx.bezierCurveTo(
-    bodyWidth / 2 + 5 * s,
-    -bodyHeight / 2 + 20 * s,
-    bodyWidth / 2 + 5 * s,
-    bodyHeight / 2 - 20 * s,
-    bodyWidth / 2,
-    bodyHeight / 2
-  );
-  ctx.closePath();
-  ctx.fill();
-  ctx.stroke();
+    ctx.fillStyle = "#E6E6F0";
+    ctx.beginPath();
+    ctx.moveTo(-bodyWidth / 2, bodyHeight / 2);
+    ctx.bezierCurveTo(
+      -bodyWidth / 2 - 5 * s,
+      bodyHeight / 2 - 20 * s,
+      -bodyWidth / 2 - 5 * s,
+      -bodyHeight / 2 + 20 * s,
+      0,
+      -bodyHeight / 2 - noseHeight
+    );
+    ctx.bezierCurveTo(
+      bodyWidth / 2 + 5 * s,
+      -bodyHeight / 2 + 20 * s,
+      bodyWidth / 2 + 5 * s,
+      bodyHeight / 2 - 20 * s,
+      bodyWidth / 2,
+      bodyHeight / 2
+    );
+    ctx.closePath();
+    ctx.fill();
+    ctx.stroke();
 
-  ctx.globalAlpha = 0.7;
-  ctx.fillStyle = "#C8C8D2";
-  ctx.beginPath();
-  ctx.moveTo(-bodyWidth / 2 + 5 * s, bodyHeight / 2 - 5 * s);
-  ctx.bezierCurveTo(
-    -bodyWidth / 2,
-    bodyHeight / 2 - 20 * s,
-    -bodyWidth / 2,
-    -bodyHeight / 2 + 20 * s,
-    0,
-    -bodyHeight / 2 - noseHeight + 5 * s
-  );
-  ctx.bezierCurveTo(
-    bodyWidth / 2,
-    -bodyHeight / 2 + 20 * s,
-    bodyWidth / 2,
-    bodyHeight / 2 - 20 * s,
-    bodyWidth / 2 - 5 * s,
-    bodyHeight / 2 - 5 * s
-  );
-  ctx.closePath();
-  ctx.fill();
-  ctx.globalAlpha = 1.0;
+    ctx.globalAlpha = 0.7;
+    ctx.fillStyle = "#C8C8D2";
+    ctx.beginPath();
+    ctx.moveTo(-bodyWidth / 2 + 5 * s, bodyHeight / 2 - 5 * s);
+    ctx.bezierCurveTo(
+      -bodyWidth / 2,
+      bodyHeight / 2 - 20 * s,
+      -bodyWidth / 2,
+      -bodyHeight / 2 + 20 * s,
+      0,
+      -bodyHeight / 2 - noseHeight + 5 * s
+    );
+    ctx.bezierCurveTo(
+      bodyWidth / 2,
+      -bodyHeight / 2 + 20 * s,
+      bodyWidth / 2,
+      bodyHeight / 2 - 20 * s,
+      bodyWidth / 2 - 5 * s,
+      bodyHeight / 2 - 5 * s
+    );
+    ctx.closePath();
+    ctx.fill();
+    ctx.globalAlpha = 1.0;
 
-  ctx.fillStyle = "#64646E";
-  ctx.beginPath();
-  ctx.ellipse(
-    0,
-    -bodyHeight / 2 - noseHeight + 15 * s,
-    (bodyWidth - 10 * s) / 2,
-    5 * s,
-    0,
-    0,
-    2 * Math.PI
-  );
-  ctx.fill();
-  ctx.stroke();
+    ctx.fillStyle = "#64646E";
+    ctx.beginPath();
+    // Robust ellipse call with safety checks for radius
+    const radiusX = Math.max(0.1, (bodyWidth - 10 * s) / 2);
+    const radiusY = Math.max(0.1, 5 * s);
+    ctx.ellipse(
+      0,
+      -bodyHeight / 2 - noseHeight + 15 * s,
+      radiusX,
+      radiusY,
+      0,
+      0,
+      2 * Math.PI
+    );
+    ctx.fill();
+    ctx.stroke();
 
-  ctx.fillStyle = "#96B4FF";
-  ctx.beginPath();
-  ctx.arc(0, -10 * s, windowSize / 2, 0, 2 * Math.PI);
-  ctx.fill();
-  ctx.stroke();
+    ctx.fillStyle = "#96B4FF";
+    ctx.beginPath();
+    ctx.arc(0, -10 * s, windowSize / 2, 0, 2 * Math.PI);
+    ctx.fill();
+    ctx.stroke();
 
-  ctx.fillStyle = "#C8C8D2";
-  const finHeight = 35 * s;
-  const finWidth = 25 * s;
+    ctx.fillStyle = "#C8C8D2";
+    const finHeight = 35 * s;
+    const finWidth = 25 * s;
 
-  ctx.beginPath();
-  ctx.moveTo(-bodyWidth / 2, bodyHeight / 2 - 10 * s);
-  ctx.bezierCurveTo(
-    -bodyWidth / 2 - finWidth,
-    bodyHeight / 2 + finHeight - 20 * s,
-    -bodyWidth / 2 - finWidth + 5 * s,
-    bodyHeight / 2 + finHeight - 5 * s,
-    -bodyWidth / 2 + 10 * s,
-    bodyHeight / 2 + 10 * s
-  );
-  ctx.closePath();
-  ctx.fill();
-  ctx.stroke();
+    ctx.beginPath();
+    ctx.moveTo(-bodyWidth / 2, bodyHeight / 2 - 10 * s);
+    ctx.bezierCurveTo(
+      -bodyWidth / 2 - finWidth,
+      bodyHeight / 2 + finHeight - 20 * s,
+      -bodyWidth / 2 - finWidth + 5 * s,
+      bodyHeight / 2 + finHeight - 5 * s,
+      -bodyWidth / 2 + 10 * s,
+      bodyHeight / 2 + 10 * s
+    );
+    ctx.closePath();
+    ctx.fill();
+    ctx.stroke();
 
-  ctx.beginPath();
-  ctx.moveTo(bodyWidth / 2, bodyHeight / 2 - 10 * s);
-  ctx.bezierCurveTo(
-    bodyWidth / 2 + finWidth,
-    bodyHeight / 2 + finHeight - 20 * s,
-    bodyWidth / 2 + finWidth - 5 * s,
-    bodyHeight / 2 + finHeight - 5 * s,
-    bodyWidth / 2 - 10 * s,
-    bodyHeight / 2 + 10 * s
-  );
-  ctx.closePath();
-  ctx.fill();
-  ctx.stroke();
+    ctx.beginPath();
+    ctx.moveTo(bodyWidth / 2, bodyHeight / 2 - 10 * s);
+    ctx.bezierCurveTo(
+      bodyWidth / 2 + finWidth,
+      bodyHeight / 2 + finHeight - 20 * s,
+      bodyWidth / 2 + finWidth - 5 * s,
+      bodyHeight / 2 + finHeight - 5 * s,
+      bodyWidth / 2 - 10 * s,
+      bodyHeight / 2 + 10 * s
+    );
+    ctx.closePath();
+    ctx.fill();
+    ctx.stroke();
 
-  ctx.fillStyle = "#B4B4C0";
-  ctx.fillRect(
-    -(bodyWidth + 5 * s) / 2,
-    bodyHeight / 2,
-    bodyWidth + 5 * s,
-    10 * s
-  );
-  ctx.strokeRect(
-    -(bodyWidth + 5 * s) / 2,
-    bodyHeight / 2,
-    bodyWidth + 5 * s,
-    10 * s
-  );
+    ctx.fillStyle = "#B4B4C0";
+    ctx.fillRect(
+      -(bodyWidth + 5 * s) / 2,
+      bodyHeight / 2,
+      bodyWidth + 5 * s,
+      10 * s
+    );
+    ctx.strokeRect(
+      -(bodyWidth + 5 * s) / 2,
+      bodyHeight / 2,
+      bodyWidth + 5 * s,
+      10 * s
+    );
 
-  ctx.fillStyle = "#FF9600";
-  ctx.beginPath();
-  ctx.moveTo(0, bodyHeight / 2 + 10 * s);
-  ctx.lineTo(-15 * s, bodyHeight / 2 + 25 * s);
-  ctx.lineTo(15 * s, bodyHeight / 2 + 25 * s);
-  ctx.closePath();
-  ctx.fill();
+    ctx.fillStyle = "#FF9600";
+    ctx.beginPath();
+    ctx.moveTo(0, bodyHeight / 2 + 10 * s);
+    ctx.lineTo(-15 * s, bodyHeight / 2 + 25 * s);
+    ctx.lineTo(15 * s, bodyHeight / 2 + 25 * s);
+    ctx.closePath();
+    ctx.fill();
 
-  ctx.restore();
+    ctx.restore();
+  } catch (e) {
+    console.error("Error drawing round rocket:", e);
+    // Fallback: draw a simple circle if complex drawing fails
+    try {
+        ctx.restore(); // Ensure context is restored if possible
+        ctx.save();
+        ctx.translate(x, y);
+        ctx.fillStyle = "#999";
+        ctx.beginPath();
+        ctx.arc(0, 0, 30 * s, 0, 2 * Math.PI);
+        ctx.fill();
+        ctx.restore();
+    } catch(e2) {
+        console.error("Fallback failed:", e2);
+    }
+  }
 }
 
 function drawRectRocket(ctx, x, y, s) {
@@ -598,10 +618,9 @@ let lastOverlayHash = "";
 function renderOverlay() {
   // Construct the desired HTML based on current state
   let newHTML = "";
-  
-  if (page === 1) {
+    if (page === 1) {
     newHTML = `
-            <div class="text-center"><h1 class="text-4xl font-extrabold text-gray-700 text-shadow">LandonMarz Mission</h1></div>
+            <div class="text-center w-full flex justify-center"><h1 class="text-4xl font-extrabold text-gray-700 text-shadow">LandonMarz Mission</h1></div>
             <div class="absolute inset-x-0 top-40 flex justify-center gap-4 pointer-events-auto">
                 <div id="shape-0-card" class="p-2 rounded-xl card-glass ${
                   rocketShape === 0 ? "bg-[#5A78FF] text-white" : "bg-white"
@@ -617,23 +636,20 @@ function renderOverlay() {
                 </div>
             </div>
             
-             <!-- Controls -->
+            <!-- Controls -->
             <div class="absolute bottom-4 inset-x-0 flex justify-center gap-8 pointer-events-auto">
-                <button class="w-16 h-16 bg-white/20 hover:bg-white/40 rounded-full backdrop-blur text-[#5A78FF] text-2xl font-bold border-2 border-[#5A78FF]/50 active:scale-95 shadow-lg" 
+                <button class="w-16 h-16 flex items-center justify-center bg-white/20 hover:bg-white/40 rounded-full backdrop-blur text-[#5A78FF] text-2xl font-bold border-2 border-[#5A78FF]/50 active:scale-95 shadow-lg" 
                     onclick="window.cycleShape(-1)">←</button>
                     
-                <button class="px-8 h-16 bg-[#5A78FF] text-white rounded-full font-bold shadow-lg hover:bg-[#4a68ef] active:scale-95 transition-all" onclick="page=2">Next Step</button>
+                <button class="px-8 h-16 flex items-center justify-center bg-[#5A78FF] text-white rounded-full font-bold shadow-lg hover:bg-[#4a68ef] active:scale-95 transition-all" onclick="page=2">Next Step</button>
                 
-                <button class="w-16 h-16 bg-white/20 hover:bg-white/40 rounded-full backdrop-blur text-[#5A78FF] text-2xl font-bold border-2 border-[#5A78FF]/50 active:scale-95 shadow-lg" 
+                <button class="w-16 h-16 flex items-center justify-center bg-white/20 hover:bg-white/40 rounded-full backdrop-blur text-[#5A78FF] text-2xl font-bold border-2 border-[#5A78FF]/50 active:scale-95 shadow-lg" 
                     onclick="window.cycleShape(1)">→</button>
-            </div>
-            <div class="absolute bottom-24 w-full text-center pointer-events-none">
-                <p class="text-gray-500 font-bold text-sm mb-2 opacity-60">Use Arrow Keys | Buttons | Click</p>
             </div>`;
   } else if (page === 2) {
     // Added visual feedback for size selection
     newHTML = `
-        <div class="text-center text-[#5A78FF]"><h1 class="text-3xl font-bold">Select Size</h1></div>
+        <div class="text-center text-[#5A78FF] w-full flex justify-center"><h1 class="text-3xl font-bold">Select Size</h1></div>
         <div class="absolute inset-x-0 top-32 flex justify-center gap-2 pointer-events-auto">
             ${typeNames.map((name, idx) => `
                 <div class="p-2 rounded-xl card-glass ${rocketType === idx ? "bg-[#5A78FF] text-white" : "bg-white text-gray-800"} cursor-pointer transition-all hover:scale-105" onclick="window.setRocketType(${idx})">
@@ -645,17 +661,13 @@ function renderOverlay() {
         
          <!-- Controls -->
         <div class="absolute bottom-4 inset-x-0 flex justify-center gap-8 pointer-events-auto">
-            <button class="w-16 h-16 bg-white/20 hover:bg-white/40 rounded-full backdrop-blur text-[#5A78FF] text-2xl font-bold border-2 border-[#5A78FF]/50 active:scale-95 shadow-lg" 
+            <button class="w-16 h-16 flex items-center justify-center bg-white/20 hover:bg-white/40 rounded-full backdrop-blur text-[#5A78FF] text-2xl font-bold border-2 border-[#5A78FF]/50 active:scale-95 shadow-lg" 
                 onclick="window.cycleType(-1)">←</button>
                 
-            <button class="px-8 h-16 bg-[#5A78FF] text-white rounded-full font-bold shadow-lg hover:bg-[#4a68ef] active:scale-95 transition-all" onclick="window.startGame()">Launch</button>
+            <button class="px-8 h-16 flex items-center justify-center bg-[#5A78FF] text-white rounded-full font-bold shadow-lg hover:bg-[#4a68ef] active:scale-95 transition-all" onclick="window.startGame()">Launch</button>
             
-            <button class="w-16 h-16 bg-white/20 hover:bg-white/40 rounded-full backdrop-blur text-[#5A78FF] text-2xl font-bold border-2 border-[#5A78FF]/50 active:scale-95 shadow-lg" 
+            <button class="w-16 h-16 flex items-center justify-center bg-white/20 hover:bg-white/40 rounded-full backdrop-blur text-[#5A78FF] text-2xl font-bold border-2 border-[#5A78FF]/50 active:scale-95 shadow-lg" 
                 onclick="window.cycleType(1)">→</button>
-        </div>
-        <div class="absolute bottom-24 w-full text-center pointer-events-none">
-             <p class="text-[#5A78FF] font-bold mb-2 opacity-80">Impacts Speed & Gravity!</p>
-             <p class="text-[#5A78FF] font-bold text-sm opacity-60">Use Arrow Keys | Buttons | Click</p>
         </div>`;
   } else if (page === 3) {
       newHTML = `
@@ -670,14 +682,14 @@ function renderOverlay() {
       // NAVIGATION PHASE
       const progress = Math.min(100, Math.floor((flightTimer / maxFlightTime) * 100));
       newHTML = `
-        <div class="absolute top-4 left-4 right-4 flex justify-between items-start pointer-events-none">
-            <div class="bg-black/50 p-2 rounded text-white text-sm">
+        <div class="absolute top-4 left-4 right-4 flex justify-center gap-8 items-start pointer-events-none">
+            <div class="bg-black/50 p-2 rounded text-white text-sm text-center">
                 <p>🚀 Time: ${Math.floor(flightTimer/60)}s / ${Math.floor(maxFlightTime/60)}s</p>
                 <p>⚠️ AVOID ASTEROIDS</p>
             </div>
-            <div class="bg-black/50 p-2 rounded text-white text-sm">
+            <div class="bg-black/50 p-2 rounded text-white text-sm text-center">
                 <p>Mars Distance</p>
-                <div class="w-32 h-2 bg-gray-700 rounded overflow-hidden mt-1">
+                <div class="w-32 h-2 bg-gray-700 rounded overflow-hidden mt-1 mx-auto">
                     <div class="h-full bg-green-500" style="width: ${progress}%"></div>
                 </div>
             </div>
