@@ -28,6 +28,7 @@ function startGame() {
 window.startGame = startGame;
 
 function startNavigation() {
+    console.log(`Starting Navigation: Page=4, RocketType=${rocketType}, RocketShape=${rocketShape}`);
     page = 4;
     rocketX = 300;
     rocketY = 0;
@@ -275,71 +276,86 @@ function drawRoundRocket(ctx, x, y, s) {
 }
 
 function drawRectRocket(ctx, x, y, s) {
-  const bodyWidth = 30 * s;
-  const bodyHeight = 60 * s;
-  const topConeHeight = 25 * s;
-  const finWidth = 35 * s;
-  const finHeight = 35 * s;
-  const windowSize = 20 * s;
-  const bodyBaseSegmentHeight = 15 * s;
+  try {
+    const bodyWidth = 30 * s;
+    const bodyHeight = 60 * s;
+    const topConeHeight = 25 * s;
+    const finWidth = 35 * s;
+    const finHeight = 35 * s;
+    const windowSize = 20 * s;
+    const bodyBaseSegmentHeight = 15 * s;
 
-  ctx.save();
-  ctx.translate(x, y);
-  ctx.strokeStyle = "#000";
-  ctx.lineWidth = 1.5 * s;
+    ctx.save();
+    ctx.translate(x, y);
+    ctx.strokeStyle = "#000";
+    ctx.lineWidth = 1.5 * s;
 
-  ctx.fillStyle = "#E6E6F0";
-  ctx.fillRect(
-    -bodyWidth / 2,
-    -bodyHeight / 2,
-    bodyWidth,
-    bodyHeight - bodyBaseSegmentHeight
-  );
-  ctx.strokeRect(
-    -bodyWidth / 2,
-    -bodyHeight / 2,
-    bodyWidth,
-    bodyHeight - bodyBaseSegmentHeight
-  );
+    ctx.fillStyle = "#E6E6F0";
+    ctx.fillRect(
+      -bodyWidth / 2,
+      -bodyHeight / 2,
+      bodyWidth,
+      bodyHeight - bodyBaseSegmentHeight
+    );
+    ctx.strokeRect(
+      -bodyWidth / 2,
+      -bodyHeight / 2,
+      bodyWidth,
+      bodyHeight - bodyBaseSegmentHeight
+    );
 
-  ctx.fillStyle = "#DEDEDE";
-  ctx.beginPath();
-  ctx.moveTo(0, -bodyHeight / 2 - topConeHeight);
-  ctx.lineTo(-bodyWidth / 2, -bodyHeight / 2);
-  ctx.lineTo(bodyWidth / 2, -bodyHeight / 2);
-  ctx.closePath();
-  ctx.fill();
-  ctx.stroke();
+    ctx.fillStyle = "#DEDEDE";
+    ctx.beginPath();
+    ctx.moveTo(0, -bodyHeight / 2 - topConeHeight);
+    ctx.lineTo(-bodyWidth / 2, -bodyHeight / 2);
+    ctx.lineTo(bodyWidth / 2, -bodyHeight / 2);
+    ctx.closePath();
+    ctx.fill();
+    ctx.stroke();
 
-  ctx.fillStyle = "#96B4FF";
-  ctx.beginPath();
-  ctx.arc(0, -10 * s, windowSize / 2, 0, 2 * Math.PI);
-  ctx.fill();
-  ctx.stroke();
+    ctx.fillStyle = "#96B4FF";
+    ctx.beginPath();
+    ctx.arc(0, -10 * s, windowSize / 2, 0, 2 * Math.PI);
+    ctx.fill();
+    ctx.stroke();
 
-  ctx.fillStyle = "#E6E6F0";
-  ctx.fillRect(
-    -(bodyWidth + 5 * s) / 2,
-    bodyHeight / 2 - bodyBaseSegmentHeight,
-    bodyWidth + 5 * s,
-    bodyBaseSegmentHeight
-  );
-  ctx.strokeRect(
-    -(bodyWidth + 5 * s) / 2,
-    bodyHeight / 2 - bodyBaseSegmentHeight,
-    bodyWidth + 5 * s,
-    bodyBaseSegmentHeight
-  );
+    ctx.fillStyle = "#E6E6F0";
+    ctx.fillRect(
+      -(bodyWidth + 5 * s) / 2,
+      bodyHeight / 2 - bodyBaseSegmentHeight,
+      bodyWidth + 5 * s,
+      bodyBaseSegmentHeight
+    );
+    ctx.strokeRect(
+      -(bodyWidth + 5 * s) / 2,
+      bodyHeight / 2 - bodyBaseSegmentHeight,
+      bodyWidth + 5 * s,
+      bodyBaseSegmentHeight
+    );
 
-  ctx.fillStyle = "#FF9600";
-  ctx.beginPath();
-  ctx.moveTo(0, bodyHeight / 2 + bodyBaseSegmentHeight);
-  ctx.lineTo(-10 * s, bodyHeight / 2 + bodyBaseSegmentHeight + 15 * s);
-  ctx.lineTo(10 * s, bodyHeight / 2 + bodyBaseSegmentHeight + 15 * s);
-  ctx.closePath();
-  ctx.fill();
+    ctx.fillStyle = "#FF9600";
+    ctx.beginPath();
+    ctx.moveTo(0, bodyHeight / 2 + bodyBaseSegmentHeight);
+    ctx.lineTo(-10 * s, bodyHeight / 2 + bodyBaseSegmentHeight + 15 * s);
+    ctx.lineTo(10 * s, bodyHeight / 2 + bodyBaseSegmentHeight + 15 * s);
+    ctx.closePath();
+    ctx.fill();
 
-  ctx.restore();
+    ctx.restore();
+  } catch (e) {
+    console.error("Error drawing rect rocket:", e);
+    // Fallback
+    try {
+        ctx.restore(); 
+        ctx.save();
+        ctx.translate(x, y);
+        ctx.fillStyle = "#999";
+        ctx.fillRect(-15 * s, -30 * s, 30 * s, 60 * s);
+        ctx.restore();
+    } catch(e2) {
+        console.error("Fallback failed:", e2);
+    }
+  }
 }
 
 function drawRocketOnMiniCanvas(canvasId, rocketType, rocketShape, scale) {
